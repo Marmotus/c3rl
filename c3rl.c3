@@ -1,26 +1,68 @@
-
 module rl;
 
 
-distinct ConfigFlag = uint;
+// alias ConfigFlag = uint;
 
-const ConfigFlag FLAG_VSYNC_HINT               = 0x00000040;   // Set to try enabling V-Sync on GPU
-const ConfigFlag FLAG_FULLSCREEN_MODE          = 0x00000002;   // Set to run program in fullscreen
-const ConfigFlag FLAG_WINDOW_RESIZABLE         = 0x00000004;   // Set to allow resizable window
-const ConfigFlag FLAG_WINDOW_UNDECORATED       = 0x00000008;   // Set to disable window decoration (frame and buttons)
-const ConfigFlag FLAG_WINDOW_HIDDEN            = 0x00000080;   // Set to hide window
-const ConfigFlag FLAG_WINDOW_MINIMIZED         = 0x00000200;   // Set to minimize window (iconify)
-const ConfigFlag FLAG_WINDOW_MAXIMIZED         = 0x00000400;   // Set to maximize window (expanded to monitor)
-const ConfigFlag FLAG_WINDOW_UNFOCUSED         = 0x00000800;   // Set to window non focused
-const ConfigFlag FLAG_WINDOW_TOPMOST           = 0x00001000;   // Set to window always on top
-const ConfigFlag FLAG_WINDOW_ALWAYS_RUN        = 0x00000100;   // Set to allow windows running while minimized
-const ConfigFlag FLAG_WINDOW_TRANSPARENT       = 0x00000010;   // Set to allow transparent framebuffer
-const ConfigFlag FLAG_WINDOW_HIGHDPI           = 0x00002000;   // Set to support HighDPI
-const ConfigFlag FLAG_WINDOW_MOUSE_PASSTHROUGH = 0x00004000;   // Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
-const ConfigFlag FLAG_BORDERLESS_WINDOWED_MODE = 0x00008000;   // Set to run program in borderless windowed mode
-const ConfigFlag FLAG_MSAA_4X_HINT             = 0x00000020;   // Set to try enabling MSAA 4X
-const ConfigFlag FLAG_INTERLACED_HINT          = 0x00010000;
+// const ConfigFlag FLAG_VSYNC_HINT               = 0x00000040;   // Set to try enabling V-Sync on GPU
+// const ConfigFlag FLAG_FULLSCREEN_MODE          = 0x00000002;   // Set to run program in fullscreen
+// const ConfigFlag FLAG_WINDOW_RESIZABLE         = 0x00000004;   // Set to allow resizable window
+// const ConfigFlag FLAG_WINDOW_UNDECORATED       = 0x00000008;   // Set to disable window decoration (frame and buttons)
+// const ConfigFlag FLAG_WINDOW_HIDDEN            = 0x00000080;   // Set to hide window
+// const ConfigFlag FLAG_WINDOW_MINIMIZED         = 0x00000200;   // Set to minimize window (iconify)
+// const ConfigFlag FLAG_WINDOW_MAXIMIZED         = 0x00000400;   // Set to maximize window (expanded to monitor)
+// const ConfigFlag FLAG_WINDOW_UNFOCUSED         = 0x00000800;   // Set to window non focused
+// const ConfigFlag FLAG_WINDOW_TOPMOST           = 0x00001000;   // Set to window always on top
+// const ConfigFlag FLAG_WINDOW_ALWAYS_RUN        = 0x00000100;   // Set to allow windows running while minimized
+// const ConfigFlag FLAG_WINDOW_TRANSPARENT       = 0x00000010;   // Set to allow transparent framebuffer
+// const ConfigFlag FLAG_WINDOW_HIGHDPI           = 0x00002000;   // Set to support HighDPI
+// const ConfigFlag FLAG_WINDOW_MOUSE_PASSTHROUGH = 0x00004000;   // Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
+// const ConfigFlag FLAG_BORDERLESS_WINDOWED_MODE = 0x00008000;   // Set to run program in borderless windowed mode
+// const ConfigFlag FLAG_MSAA_4X_HINT             = 0x00000020;   // Set to try enabling MSAA 4X
+// const ConfigFlag FLAG_INTERLACED_HINT          = 0x00010000;
 
+enum ConfigFlag : (inline int v)
+{
+    VSYNC_HINT                  = 0x00000040,   // Set to try enabling V-Sync on GPU
+    FULLSCREEN_MODE             = 0x00000002,   // Set to run program in fullscreen
+    WINDOW_RESIZABLE            = 0x00000004,   // Set to allow resizable window
+    WINDOW_UNDECORATED          = 0x00000008,   // Set to disable window decoration (frame and buttons)
+    WINDOW_HIDDEN               = 0x00000080,   // Set to hide window
+    WINDOW_MINIMIZED            = 0x00000200,   // Set to minimize window (iconify)
+    WINDOW_MAXIMIZED            = 0x00000400,   // Set to maximize window (expanded to monitor)
+    WINDOW_UNFOCUSED            = 0x00000800,   // Set to window non focused
+    WINDOW_TOPMOST              = 0x00001000,   // Set to window always on top
+    WINDOW_ALWAYS_RUN           = 0x00000100,   // Set to allow windows running while minimized
+    WINDOW_TRANSPARENT          = 0x00000010,   // Set to allow transparent framebuffer
+    WINDOW_HIGHDPI              = 0x00002000,   // Set to support HighDPI
+    WINDOW_MOUSE_PASSTHROUGH    = 0x00004000,   // Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
+    BORDERLESS_WINDOWED_MODE    = 0x00008000,   // Set to run program in borderless windowed mode
+    MSAA_4X_HINT                = 0x00000020,   // Set to try enabling MSAA 4X
+    INTERLACED_HINT             = 0x00010000,
+}
+
+
+struct Vector2
+{
+    float x;
+    float y;
+}
+
+struct Vector3
+{
+    float x;
+    float y;
+    float z;
+}
+
+struct Vector4
+{
+    float x;
+    float y;
+    float z;
+    float w;
+}
+
+alias Quaternion = Vector4;
 
 struct Color
 {
@@ -121,5 +163,9 @@ extern fn char* decompress_data(char* comp_data, CInt comp_data_size, CInt *data
 
 
 extern fn void draw_text(char* text, CInt pos_x, CInt pos_y, CInt font_size, Color color) @extern("DrawText");
-extern fn void draw_rectangle(CInt posX, CInt posY, CInt width, CInt height, Color color) @extern("DrawRectangle"); // Draw a color-filled rectangle
+extern fn int measure_text(char* text, CInt font_size) @extern("MeasureText");
+
+extern fn void draw_rectangle(CInt pos_x, CInt pos_y, CInt width, CInt height, Color color) @extern("DrawRectangle"); // Draw a color-filled rectangle
+extern fn void draw_rectangle_lines(CInt pos_x, CInt pos_y, CInt width, CInt height, Color color) @extern("DrawRectangleLines");
+extern fn void draw_rectangle_lines_ex(Rectangle rec, float line_thickness, Color color) @extern("DrawRectangleLinesEx");
 extern fn void draw_rectangle_rounded(Rectangle rec, float roundness, CInt segments, Color color) @extern("DrawRectangleRounded");
